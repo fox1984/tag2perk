@@ -14,6 +14,12 @@ class ApplicationRecord < ActiveRecord::Base
   #
   # Override this method to add/remove sortable columns
   def self.sortable_columns
-    @sortable_columns ||= columns.map(&:name)
+    @sortable_columns ||= begin
+      return [] unless ActiveRecord::Base.connection.active? rescue false
+      columns.map(&:name)
+    end
+  rescue ActiveRecord::NoDatabaseError, ActiveRecord::ConnectionNotEstablished
+    []
   end
+
 end
