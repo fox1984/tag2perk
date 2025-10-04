@@ -122,7 +122,7 @@ staging:
 production:
   primary: &primary_production
     <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+    url: <%= ENV['DATABASE_URL'] %>
     # Or set DATABASE_URL to override
 
   cache:
