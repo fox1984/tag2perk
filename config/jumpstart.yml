@@ -1,0 +1,20 @@
+---
+application_name: Tag2Perk
+business_name: My Company, LLC
+business_address: 
+domain: tag2perk.com
+support_email: support@tag2perk.com
+default_from_email: My App <no-reply@tag2perk.com>
+background_job_processor: 
+email_provider: resend
+account_types: both
+apns: false
+fcm: false
+integrations:
+- appsignal
+omniauth_providers:
+payment_processors:
+- stripe
+multitenancy:
+gems:
+- acts_as_tenant

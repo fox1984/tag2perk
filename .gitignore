@@ -45,3 +45,11 @@ yarn-debug.log*
 .DS_Store
 .idea
 *~
+
+# Ignore key files for decrypting credentials and more.
+/config/credentials/*.key
+
+
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+
