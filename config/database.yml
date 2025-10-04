@@ -122,9 +122,7 @@ staging:
 production:
   primary: &primary_production
     <<: *default
-    database: jumpstart_production
-    username: jumpstart
-    password: <%= ENV["POSTGRES_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
     # Or set DATABASE_URL to override
 
   cache:
