@@ -119,26 +119,26 @@ staging:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
-production:
+production: 
   primary: &primary_production
     <<: *default
     url: <%= ENV['DATABASE_URL'] %>
     # Or set DATABASE_URL to override
 
   cache:
-    <<: *primary_production
-    database: jumpstart_production_cache
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
     migrations_paths: db/cache_migrate
     # Or set CACHE_DATABASE_URL to override
 
   queue:
-    <<: *primary_production
-    database: jumpstart_production_queue
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
     migrations_paths: db/queue_migrate
     # Or set QUEUE_DATABASE_URL to override
 
   cable:
-    <<: *primary_production
-    database: jumpstart_production_cable
+    <<: *default
+    url: <%= ENV['DATABASE_URL'] %>
     migrations_paths: db/cable_migrate
     # Or set CABLE_DATABASE_URL to override
