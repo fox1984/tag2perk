@@ -37,8 +37,8 @@ development:
 
 production:
   <<: *defaults
-  active: true
+  active: false
 
 staging:
   <<: *defaults
-  active: true
+  active: false

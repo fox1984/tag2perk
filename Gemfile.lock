@@ -106,9 +106,6 @@ GEM
       rails (>= 6.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    appsignal (4.7.4)
-      logger
-      rack (>= 2.0.0)
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt (3.1.20)
@@ -186,6 +183,9 @@ GEM
       activesupport (>= 6.1)
     hashdiff (1.2.1)
     hashids (1.0.6)
+    honeybadger (6.1.0)
+      logger
+      ostruct
     hotwire_combobox (0.4.0)
       platform_agent (>= 1.0.1)
       rails (>= 7.0.7.2)
@@ -546,7 +546,6 @@ PLATFORMS
 DEPENDENCIES
   action_text-trix (~> 2.1)
   acts_as_tenant (~> 1.0)
-  appsignal
   bootsnap (>= 1.4.2)
   brakeman
   bundler-audit
@@ -555,6 +554,7 @@ DEPENDENCIES
   devise!
   devise-i18n (~> 1.10)
   erb_lint
+  honeybadger
   hotwire_combobox (~> 0.3)
   image_processing (~> 1.12)
   importmap-rails
@@ -611,7 +611,6 @@ CHECKSUMS
   activesupport (8.1.0.beta1) sha256=d304ac57f7eba8f3d35b4f61703898d07a1ccb4c665c15e1feabae94a1079e28
   acts_as_tenant (1.0.1) sha256=6944e4d64533337938a8817a6b4ff9b11189c9dcc0b1333bb89f3821a4c14c53
   addressable (2.8.7) sha256=462986537cf3735ab5f3c0f557f14155d778f4b43ea4f485a9deb9c8f7c58232
-  appsignal (4.7.4) sha256=86cc15a7a64bf6bff899c3910597414b22c702057406ffcb97c20a1d8f9c8979
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b
   bcrypt (3.1.20) sha256=8410f8c7b3ed54a3c00cd2456bf13917d695117f033218e2483b2e40b0784099
@@ -656,6 +655,7 @@ CHECKSUMS
   globalid (1.2.1) sha256=70bf76711871f843dbba72beb8613229a49429d1866828476f9c9d6ccc327ce9
   hashdiff (1.2.1) sha256=9c079dbc513dfc8833ab59c0c2d8f230fa28499cc5efb4b8dd276cf931457cd1
   hashids (1.0.6) sha256=a344c05f249417492bf48451a93770558834ff7a445e1b64ef112954a0293019
+  honeybadger (6.1.0) sha256=21e2bffa936962b05d5bd2828b24962f36c0c5750dc7ee2702fb3952902d50c5
   hotwire_combobox (0.4.0) sha256=9ecae02e3b0686541f2d17eed22d616b64fabc42430de2f8de300a5dbba58cd2
   httparty (0.23.1) sha256=3ac1dd62f2010f6ece551716f5ceec2b2012011d89f1751917ab7f724e966b55
   i18n (1.14.7) sha256=ceba573f8138ff2c0915427f1fc5bdf4aa3ab8ae88c8ce255eb3ecf0a11a5d0f

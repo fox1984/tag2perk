@@ -11,7 +11,7 @@ account_types: both
 apns: false
 fcm: false
 integrations:
-- appsignal
+- honeybadger
 omniauth_providers:
 payment_processors:
 - stripe

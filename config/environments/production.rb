@@ -110,4 +110,7 @@ Rails.application.configure do
   else
     config.action_mailer.smtp_settings = Jumpstart.config.smtp_settings
   end
+
+  # Error reporting: Honeybadger
+  # Uses credentials: Rails.application.credentials.dig(:honeybadger, :api_key)
 end
