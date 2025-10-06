@@ -3,8 +3,8 @@ application_name: Tag2Perk
 business_name: My Company, LLC
 business_address: 
 domain: tag2perk.com
-support_email: support@send.tag2perk.com
-default_from_email: Tag2Perk <no-reply@send.tag2perk.com>
+support_email: support@mail.tag2perk.com
+default_from_email: Tag2Perk <no-reply@mail.tag2perk.com>
 background_job_processor: 
 email_provider: resend
 account_types: both
