@@ -13,6 +13,7 @@ fcm: false
 integrations:
 - honeybadger
 omniauth_providers:
+- facebook
 payment_processors:
 - stripe
 multitenancy:
