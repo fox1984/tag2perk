@@ -33,12 +33,6 @@ module Jumpstart
         provider: :twitter,
         icon: :twitter
       }
-      ,
-      "instagram" => {
-        name: "Instagram",
-        provider: :instagram,
-        icon: :instagram
-      }
     }.freeze
 
     def self.all_providers
