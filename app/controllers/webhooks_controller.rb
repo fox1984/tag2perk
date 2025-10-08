@@ -3,13 +3,19 @@ class WebhooksController < ApplicationController
     
     # GET endpoint for webhook verification
     def instagram
-      if params['hub.mode'] == 'subscribe' && 
-         params['hub.verify_token'] == ENV['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
-        render plain: params['hub.challenge'], status: :ok
-      else
-        render plain: 'Forbidden', status: :forbidden
+        # Try this instead
+        verify_token = Rails.application.credentials.facebook[:webhook_verify_token]
+        
+        Rails.logger.info "Verify token: #{verify_token.inspect}"
+        
+        if params['hub.mode'] == 'subscribe' && 
+           params['hub.verify_token'] == verify_token
+          render plain: params['hub.challenge'], status: :ok
+        else
+          Rails.logger.info "Token mismatch. Expected: #{verify_token}, Got: #{params['hub.verify_token']}"
+          render plain: 'Forbidden', status: :forbidden
+        end
       end
-    end
     
     # POST endpoint for webhook events
     def instagram_events
