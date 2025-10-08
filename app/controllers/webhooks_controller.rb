@@ -4,7 +4,7 @@ class WebhooksController < ApplicationController
     # GET endpoint for webhook verification
     def instagram
         # Try this instead
-        verify_token = Rails.application.credentials.facebook[:webhook_verify_token]
+        verify_token = Rails.application.credentials[:facebook][:webhook_verify_token]
         
         Rails.logger.info "Verify token: #{verify_token.inspect}"
         
