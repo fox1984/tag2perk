@@ -28,6 +28,10 @@ Rails.application.routes.draw do
     get :reset_app
   end
 
+  # Instagram webhook
+get '/webhooks/instagram', to: 'webhooks#instagram'
+post '/webhooks/instagram', to: 'webhooks#instagram_events'
+
   match "/404", via: :all, to: "errors#not_found"
   match "/500", via: :all, to: "errors#internal_server_error"
 
