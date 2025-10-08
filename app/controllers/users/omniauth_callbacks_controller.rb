@@ -1,33 +1,38 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   include Jumpstart::Omniauth::Callbacks
 
-  # Jumpstart Pro's Callbacks module handles:
-  #
-  #   1. Registering with OAuth
-  #   2. Connecting OAuth when logged in
-  #   3. Logging in with OAuth
-  #   4. Rejecting OAuth if user already has account, but hasn't connected this OAuth account yet
-
-  # For extra processing on the account that was just connected,
-  # simply define a method like the following examples:
-  #
-  # def github_connected(connected_account)
-  # end
-  #
-  # def twitter_connected(connected_account)
-  # end
-  #
-  # etc...
-
-  # To change the redirect URL after an account is connected, you can override the following methods:
-  #
-  # After sign up and sign in with OAuth
-  # def after_sign_in_path_for(resource)
-  #   root_path
-  # end
-  #
-  # After connecting an OAuth account while logged in
-  # def after_connect_redirect_path(connected_account)
-  #   request.env['omniauth.origin'] || user_connected_accounts_path
-  # end
+  # Called after Facebook account is connected
+  def facebook_connected(connected_account)
+    auth = request.env['omniauth.auth']
+    
+    # Fetch Instagram username from Facebook Graph API
+    instagram_username = fetch_instagram_username(connected_account.access_token)
+    
+    if instagram_username
+      current_user.update(
+        instagram_username: instagram_username,
+        instagram_user_id: auth.uid # Save this too for verification
+      )
+    end
+  end
+  
+  private
+  
+  def fetch_instagram_username(access_token)
+    # Query Facebook Graph API to get Instagram account
+    response = HTTParty.get(
+      'https://graph.facebook.com/v18.0/me/accounts',
+      query: {
+        fields: 'instagram_business_account{username,id}',
+        access_token: access_token
+      }
+    )
+    
+    # Extract Instagram username from response
+    instagram_account = response.dig('data', 0, 'instagram_business_account')
+    instagram_account&.dig('username')
+  rescue => e
+    Rails.logger.error "Failed to fetch Instagram: #{e.message}"
+    nil
+  end
 end
