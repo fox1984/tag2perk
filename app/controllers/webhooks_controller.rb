@@ -48,17 +48,44 @@ class WebhooksController < ApplicationController
       end
     end
     
-    def handle_tagged_media(data)
-      # When someone tags your business
-      media_id = data['media_id']
-      # Trigger verification check or notification
-    end
+    def handle_tagged_media(instagram_user_id, data)
+        # Find the business this belongs to
+        business = Business.find_by(instagram_user_id: instagram_user_id)
+        return unless business
+        
+        media_id = data['media_id']
+        
+        # Fetch full media details from API
+        media_data = fetch_media_details(media_id, business.instagram_access_token)
+        
+        # Create stream post record
+        StreamPost.create!(
+          business: business,
+          instagram_media_id: media_id,
+          username: media_data['username'],
+          media_url: media_data['media_url'],
+          permalink: media_data['permalink'],
+          caption: media_data['caption'],
+          timestamp: media_data['timestamp'],
+          approved: false # Requires moderation
+        )
+        
+        Rails.logger.info "Tagged media saved: #{media_id} by #{media_data['username']}"
+      end
     
-    def handle_mention(data)
-      # When someone @mentions your business
-    end
     
-    def handle_comment(data)
-      # When someone comments
-    end
+      def fetch_media_details(media_id, access_token)
+        response = HTTParty.get(
+          "https://graph.instagram.com/#{media_id}",
+          query: {
+            fields: 'id,username,media_url,media_type,permalink,caption,timestamp',
+            access_token: access_token
+          }
+        )
+        response.parsed_response
+      rescue => e
+        Rails.logger.error "Failed to fetch media #{media_id}: #{e.message}"
+        {}
+      end
+    
   end
