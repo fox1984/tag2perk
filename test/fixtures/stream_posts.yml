@@ -1,21 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  business: one
+  account: one
   instagram_media_id: MyString
   username: MyString
   media_url: MyString
   permalink: MyString
   caption: MyText
-  timestamp: 2025-10-09 11:56:17
+  timestamp: 2025-10-09 15:04:07
   approved: false
 
 two:
-  business: two
+  account: two
   instagram_media_id: MyString
   username: MyString
   media_url: MyString
   permalink: MyString
   caption: MyText
-  timestamp: 2025-10-09 11:56:17
+  timestamp: 2025-10-09 15:04:07
   approved: false

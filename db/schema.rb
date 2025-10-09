@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_08_170835) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -312,6 +312,20 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_08_170835) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
+  create_table "stream_posts", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "approved"
+    t.text "caption"
+    t.datetime "created_at", null: false
+    t.string "instagram_media_id"
+    t.string "media_url"
+    t.string "permalink"
+    t.datetime "timestamp"
+    t.datetime "updated_at", null: false
+    t.string "username"
+    t.index ["account_id"], name: "index_stream_posts_on_account_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "accepted_privacy_at", precision: nil
     t.datetime "accepted_terms_at", precision: nil
@@ -366,4 +380,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_08_170835) do
   add_foreign_key "pay_charges", "pay_customers", column: "customer_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
+  add_foreign_key "stream_posts", "accounts"
 end
