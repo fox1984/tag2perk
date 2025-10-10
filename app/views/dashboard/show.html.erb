@@ -17,11 +17,9 @@
         </div>
         <p class="text-sm text-gray-600 dark:text-gray-400">Your Instagram Business account is connected.</p>
 
-<% else %>
-  <p class="text-gray-600 dark:text-gray-400 mb-4">Connect your Instagram Business account to start receiving tagged posts.</p>
-  <%= button_to "Connect Instagram", user_facebook_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "btn btn-primary" %>
-<% end %>
-
+      <% else %>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">Connect your Instagram Business account to start receiving tagged posts.</p>
+        <%= button_to "Connect Instagram", user_facebook_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "btn btn-primary" %>
       <% end %>
     </div>
 
