@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
+ActiveRecord::Schema[8.1].define(version: 2025_10_13_172707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,6 +43,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
     t.datetime "created_at", null: false
     t.string "domain"
     t.text "extra_billing_info"
+    t.string "instagram_user_id"
+    t.string "instagram_username"
     t.string "name", null: false
     t.bigint "owner_id"
     t.boolean "personal", default: false
@@ -118,6 +120,103 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
+  create_table "businesses", force: :cascade do |t|
+    t.string "accent_color"
+    t.bigint "account_id", null: false
+    t.text "address"
+    t.decimal "birthday_bonus_amount", precision: 10, scale: 2, default: "10.0"
+    t.boolean "birthday_bonus_enabled", default: false
+    t.string "brand_color", default: "#3B82F6"
+    t.jsonb "business_hours", default: {}
+    t.decimal "click_reward_amount", precision: 10, scale: 2, default: "0.5"
+    t.boolean "click_reward_enabled", default: true
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "instagram_handle"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.string "location"
+    t.string "logo_url"
+    t.decimal "longitude", precision: 10, scale: 6
+    t.jsonb "membership_multipliers", default: {"vip" => 2.0, "basic" => 1.0, "premium" => 1.5}
+    t.string "name", null: false
+    t.string "phone"
+    t.boolean "points_enabled", default: true
+    t.integer "points_per_dollar", default: 10
+    t.integer "points_to_dollars_rate", default: 100
+    t.decimal "referral_bonus_amount", precision: 10, scale: 2, default: "5.0"
+    t.boolean "referral_bonus_enabled", default: true
+    t.jsonb "reward_settings", default: {}
+    t.string "slug"
+    t.string "status", default: "active", null: false
+    t.boolean "streak_bonus_enabled", default: false
+    t.decimal "streak_bonus_per_day", precision: 10, scale: 2, default: "0.5"
+    t.integer "streak_points_per_day", default: 5
+    t.jsonb "tier_multipliers", default: {"gold" => 2.0, "bronze" => 1.0, "silver" => 1.5}
+    t.jsonb "tier_requirements", default: {"gold" => {"earned" => 200, "points" => 1000, "visits" => 20}, "silver" => {"earned" => 50, "points" => 250, "visits" => 5}}
+    t.datetime "updated_at", null: false
+    t.string "website_url"
+    t.index ["account_id"], name: "index_businesses_on_account_id"
+    t.index ["business_hours"], name: "index_businesses_on_business_hours", using: :gin
+    t.index ["latitude", "longitude"], name: "index_businesses_on_latitude_and_longitude"
+    t.index ["membership_multipliers"], name: "index_businesses_on_membership_multipliers", using: :gin
+    t.index ["reward_settings"], name: "index_businesses_on_reward_settings", using: :gin
+    t.index ["slug"], name: "index_businesses_on_slug", unique: true
+    t.index ["status"], name: "index_businesses_on_status"
+    t.index ["tier_multipliers"], name: "index_businesses_on_tier_multipliers", using: :gin
+    t.index ["tier_requirements"], name: "index_businesses_on_tier_requirements", using: :gin
+  end
+
+  create_table "challenge_completions", force: :cascade do |t|
+    t.datetime "approved_at"
+    t.bigint "challenge_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "gift_card_id", null: false
+    t.datetime "rejected_at"
+    t.string "rejection_reason"
+    t.text "review_notes"
+    t.datetime "reviewed_at"
+    t.bigint "reviewed_by_id"
+    t.decimal "reward_amount_earned", precision: 10, scale: 2
+    t.integer "reward_points_earned"
+    t.string "status", default: "pending", null: false
+    t.jsonb "submission_data", default: {}, null: false
+    t.text "submission_notes"
+    t.string "submission_type"
+    t.string "submission_url"
+    t.datetime "submitted_at"
+    t.bigint "transaction_id"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["approved_at"], name: "index_challenge_completions_on_approved_at"
+    t.index ["challenge_id", "user_id", "status"], name: "index_one_pending_per_user_per_challenge", unique: true, where: "((status)::text = 'pending'::text)"
+    t.index ["challenge_id", "user_id"], name: "index_completions_on_challenge_user"
+    t.index ["challenge_id"], name: "index_challenge_completions_on_challenge_id"
+    t.index ["gift_card_id"], name: "index_challenge_completions_on_gift_card_id"
+    t.index ["reviewed_by_id"], name: "index_challenge_completions_on_reviewed_by_id"
+    t.index ["status"], name: "index_challenge_completions_on_status"
+    t.index ["submission_data"], name: "index_challenge_completions_on_submission_data", using: :gin
+    t.index ["submitted_at"], name: "index_challenge_completions_on_submitted_at"
+    t.index ["transaction_id"], name: "index_challenge_completions_on_transaction_id"
+    t.index ["user_id", "status"], name: "index_challenge_completions_on_user_id_and_status"
+    t.index ["user_id"], name: "index_challenge_completions_on_user_id"
+  end
+
+  create_table "challenges", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.string "challenge_type"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.datetime "ends_at"
+    t.integer "pending_completions_count", default: 0, null: false
+    t.decimal "reward_amount"
+    t.integer "reward_points"
+    t.datetime "starts_at"
+    t.string "status"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["business_id"], name: "index_challenges_on_business_id"
+  end
+
   create_table "connected_accounts", force: :cascade do |t|
     t.string "access_token"
     t.string "access_token_secret"
@@ -133,11 +232,41 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
     t.index ["owner_id", "owner_type"], name: "index_connected_accounts_on_owner_id_and_owner_type"
   end
 
+  create_table "gift_cards", force: :cascade do |t|
+    t.bigint "business_id", null: false
+    t.string "card_number"
+    t.datetime "created_at", null: false
+    t.string "status"
+    t.string "tier"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["business_id"], name: "index_gift_cards_on_business_id"
+    t.index ["user_id"], name: "index_gift_cards_on_user_id"
+  end
+
   create_table "inbound_webhooks", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.boolean "auto_renew"
+    t.jsonb "benefits"
+    t.string "billing_interval"
+    t.bigint "business_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "expires_at"
+    t.string "membership_type"
+    t.decimal "price"
+    t.datetime "started_at"
+    t.string "status"
+    t.string "stripe_subscription_id"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["business_id"], name: "index_memberships_on_business_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "noticed_events", force: :cascade do |t|
@@ -326,6 +455,33 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
     t.index ["account_id"], name: "index_stream_posts_on_account_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.bigint "business_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.bigint "gift_card_id", null: false
+    t.jsonb "metadata", default: {}, null: false
+    t.integer "points", default: 0, null: false
+    t.integer "source_id"
+    t.string "source_type"
+    t.string "status", default: "completed", null: false
+    t.string "transaction_type", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["business_id"], name: "index_transactions_on_business_id"
+    t.index ["created_at"], name: "index_transactions_on_created_at"
+    t.index ["gift_card_id", "created_at"], name: "index_transactions_on_card_and_date"
+    t.index ["gift_card_id"], name: "index_transactions_on_gift_card_id"
+    t.index ["metadata"], name: "index_transactions_on_metadata", using: :gin
+    t.index ["source_type", "source_id"], name: "index_transactions_on_source"
+    t.index ["status"], name: "index_transactions_on_status"
+    t.index ["transaction_type"], name: "index_transactions_on_transaction_type"
+    t.index ["user_id", "business_id"], name: "index_transactions_on_user_business"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+    t.check_constraint "amount <> 0::numeric", name: "amount_not_zero"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "accepted_privacy_at", precision: nil
     t.datetime "accepted_terms_at", precision: nil
@@ -370,6 +526,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wallet_passes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.bigint "gift_card_id", null: false
+    t.datetime "installed_at"
+    t.datetime "last_updated_at"
+    t.jsonb "metadata"
+    t.string "platform"
+    t.string "push_token"
+    t.string "serial_number"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.index ["gift_card_id"], name: "index_wallet_passes_on_gift_card_id"
+  end
+
   add_foreign_key "account_invitations", "accounts"
   add_foreign_key "account_invitations", "users", column: "invited_by_id"
   add_foreign_key "account_users", "accounts"
@@ -377,8 +548,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_09_210407) do
   add_foreign_key "accounts", "users", column: "owner_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "api_tokens", "users"
+  add_foreign_key "businesses", "accounts"
+  add_foreign_key "challenge_completions", "challenges"
+  add_foreign_key "challenge_completions", "gift_cards"
+  add_foreign_key "challenge_completions", "transactions"
+  add_foreign_key "challenge_completions", "users"
+  add_foreign_key "challenge_completions", "users", column: "reviewed_by_id"
+  add_foreign_key "challenges", "businesses"
+  add_foreign_key "gift_cards", "businesses"
+  add_foreign_key "gift_cards", "users"
+  add_foreign_key "memberships", "businesses"
+  add_foreign_key "memberships", "users"
   add_foreign_key "pay_charges", "pay_customers", column: "customer_id"
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
   add_foreign_key "stream_posts", "accounts"
+  add_foreign_key "transactions", "businesses"
+  add_foreign_key "transactions", "gift_cards"
+  add_foreign_key "transactions", "users"
+  add_foreign_key "wallet_passes", "gift_cards"
 end

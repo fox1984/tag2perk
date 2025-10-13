@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  business: one
+  membership_type: MyString
+  status: MyString
+  started_at: 2025-10-12 21:55:19
+  expires_at: 2025-10-12 21:55:19
+  auto_renew: false
+  stripe_subscription_id: MyString
+  price: 9.99
+  billing_interval: MyString
+  benefits: 
+
+two:
+  user: two
+  business: two
+  membership_type: MyString
+  status: MyString
+  started_at: 2025-10-12 21:55:19
+  expires_at: 2025-10-12 21:55:19
+  auto_renew: false
+  stripe_subscription_id: MyString
+  price: 9.99
+  billing_interval: MyString
+  benefits: 

@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  business: one
+  title: MyString
+  description: MyText
+  challenge_type: MyString
+  reward_amount: 9.99
+  reward_points: 1
+  status: MyString
+  starts_at: 2025-10-12 21:55:41
+  ends_at: 2025-10-12 21:55:41
+
+two:
+  business: two
+  title: MyString
+  description: MyText
+  challenge_type: MyString
+  reward_amount: 9.99
+  reward_points: 1
+  status: MyString
+  starts_at: 2025-10-12 21:55:41
+  ends_at: 2025-10-12 21:55:41
