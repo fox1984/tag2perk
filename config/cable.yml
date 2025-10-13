@@ -25,21 +25,27 @@ production:
   message_retention: 1.day
 
 # To use Redis for ActionCable, uncomment redis in the Gemfile and use the following configuration:
-#
-# development:
-#   adapter: redis
-#   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-#   channel_prefix: jumpstart_development
-#
-# test:
-#   adapter: async
-#
-# staging:
-#   adapter: redis
-#   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-#   channel_prefix: jumpstart_staging
-#
-# production:
-#   adapter: redis
-#   url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-#   channel_prefix: jumpstart_production
+
+development:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: jumpstart_development
+  allowed_request_origins:
+    - <%= ENV.fetch("CABLE_ORIGIN") { "https://app.tag2perk.com" } %>
+
+test:
+  adapter: async
+
+staging:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: jumpstart_staging
+  allowed_request_origins:
+    - <%= ENV.fetch("CABLE_ORIGIN") { "https://app.tag2perk.com" } %>
+
+production:
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  channel_prefix: jumpstart_production
+  allowed_request_origins:
+    - <%= ENV.fetch("CABLE_ORIGIN") { "https://app.tag2perk.com" } %>
