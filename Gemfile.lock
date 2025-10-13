@@ -194,7 +194,7 @@ GEM
     hashdiff (1.2.1)
     hashids (1.0.6)
     hashie (5.0.0)
-    honeybadger (6.1.0)
+    honeybadger (6.1.1)
       logger
       ostruct
     hotwire_combobox (0.4.0)
