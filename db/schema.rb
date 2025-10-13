@@ -202,19 +202,42 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_13_172707) do
   end
 
   create_table "challenges", force: :cascade do |t|
+    t.integer "attempts_count", default: 0
+    t.boolean "auto_approve", default: false, null: false
     t.bigint "business_id", null: false
-    t.string "challenge_type"
+    t.string "challenge_type", null: false
+    t.integer "completions_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.datetime "ends_at"
+    t.string "icon"
+    t.string "image_url"
+    t.integer "max_completions"
+    t.integer "max_completions_per_user", default: 1
+    t.jsonb "metadata", default: {}, null: false
     t.integer "pending_completions_count", default: 0, null: false
-    t.decimal "reward_amount"
-    t.integer "reward_points"
+    t.integer "priority", default: 0
+    t.jsonb "requirements", default: {}, null: false
+    t.boolean "requires_approval", default: true, null: false
+    t.decimal "reward_amount", precision: 10, scale: 2, default: "0.0", null: false
+    t.integer "reward_points", default: 0, null: false
+    t.string "slug"
     t.datetime "starts_at"
-    t.string "status"
-    t.string "title"
+    t.string "status", default: "draft", null: false
+    t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.integer "views_count", default: 0
     t.index ["business_id"], name: "index_challenges_on_business_id"
+    t.index ["challenge_type"], name: "index_challenges_on_challenge_type"
+    t.index ["metadata"], name: "index_challenges_on_metadata", using: :gin
+    t.index ["priority"], name: "index_challenges_on_priority"
+    t.index ["requirements"], name: "index_challenges_on_requirements", using: :gin
+    t.index ["slug"], name: "index_challenges_on_slug"
+    t.index ["starts_at", "ends_at"], name: "index_challenges_on_active_period"
+    t.index ["status"], name: "index_challenges_on_status"
+    t.check_constraint "max_completions_per_user > 0", name: "max_per_user_positive"
+    t.check_constraint "reward_amount >= 0::numeric", name: "reward_amount_non_negative"
+    t.check_constraint "reward_points >= 0", name: "reward_points_non_negative"
   end
 
   create_table "connected_accounts", force: :cascade do |t|

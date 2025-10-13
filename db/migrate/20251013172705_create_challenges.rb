@@ -52,7 +52,6 @@ class CreateChallenges < ActiveRecord::Migration[8.1]
       t.timestamps
       
       # Indexes
-      t.index :business_id
       t.index :slug
       t.index :challenge_type
       t.index :status
