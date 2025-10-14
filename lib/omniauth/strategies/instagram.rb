@@ -2,7 +2,7 @@ require 'omniauth-oauth2'
 
 puts "Loading Instagram OmniAuth strategy..."
 
-module Omniauth
+module OmniAuth
   module Strategies
     class Instagram < ::OmniAuth::Strategies::OAuth2
       option :name, 'instagram'
