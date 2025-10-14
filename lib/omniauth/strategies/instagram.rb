@@ -1,11 +1,11 @@
-require 'omniauth-oauth2'
+=begin #require 'omniauth-oauth2'
 
 puts "Loading Instagram OmniAuth strategy..."
 
-module OmniAuth
-  module Strategies
-    class Instagram < ::OmniAuth::Strategies::OAuth2
-      option :name, 'instagram'
+# module OmniAuth
+#   module Strategies
+#     class Instagram < ::OmniAuth::Strategies::OAuth2
+#       option :name, 'instagram'
 
       option :client_options, {
         site: 'https://api.instagram.com',
